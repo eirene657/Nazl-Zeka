@@ -286,6 +286,19 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
 
         async function callGroqAI(userMessage) {
             try {
+                // Emirhan + Nazlıcan romantik sorular
+                if ((userMessage.toLowerCase().includes('emirhan') && userMessage.toLowerCase().includes('nazlıcan')) ||
+                    (userMessage.toLowerCase().includes('nazlıcan') && userMessage.toLowerCase().includes('emirhan'))) {
+                    const romanticResponses = [
+                        "Emirhan ve Nazlıcan çok güzel bir çift! 💕✨ Aşkları çok özel!",
+                        "Emirhan'ın Nazlıcan'a olan sevgisi gerçekten kalpten! 😍💫",
+                        "Nazlıcan'ın yanında Emirhan daha mutlu görünüyor! 🥰💕",
+                        "Emirhan ve Nazlıcan birbirlerinin tamamı! 💑✨",
+                        "Onların aşkı çok saf ve güzel! Çiftliklere layan bir aşk! 💕🔥"
+                    ];
+                    return romanticResponses[Math.floor(Math.random() * romanticResponses.length)];
+                }
+
                 // Nazlıcan kim? sorusuna spesifik kontrol
                 if (userMessage.toLowerCase().includes('nazlıcan') && userMessage.toLowerCase().includes('kim')) {
                     return "Nazlıcan, Emirhanın biricik sevgilisidir! 💕";

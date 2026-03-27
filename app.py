@@ -56,6 +56,22 @@ def chat():
         if not user_message:
             return jsonify({'error': 'Mesaj boş olamaz'}), 400
         
+        # Emirhan + Nazlıcan romantik sorular
+        if ('emirhan' in user_message.lower() and 'nazlıcan' in user_message.lower()) or \
+           ('nazlıcan' in user_message.lower() and 'emirhan' in user_message.lower()):
+            responses = [
+                "Emirhan ve Nazlıcan çok güzel bir çift! 💕✨ Aşkları çok özel!",
+                "Emirhan'ın Nazlıcan'a olan sevgisi gerçekten kalpten! 😍💫",
+                "Nazlıcan'ın yanında Emirhan daha mutlu görünüyor! 🥰💕",
+                "Emirhan ve Nazlıcan birbirlerinin tamamı! 💑✨",
+                "Onların aşkı çok saf ve güzel! Çiftliklere layan bir aşk! 💕🔥"
+            ]
+            import random
+            return jsonify({
+                'response': random.choice(responses),
+                'success': True
+            })
+        
         # Nazlıcan kim? sorusuna spesifik kontrol
         if 'nazlıcan' in user_message.lower() and 'kim' in user_message.lower():
             return jsonify({
