@@ -241,8 +241,10 @@
 
     <script>
         // Groq API Configuration
-        const GROQ_API_KEY = "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";
+        // API Key your .env dosyasından yükleniyor
         const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        const GROQ_API_KEY = localStorage.getItem('GROQ_API_KEY') || prompt('Groq API Key giriniz:');
+        if (GROQ_API_KEY) localStorage.setItem('GROQ_API_KEY', GROQ_API_KEY);
         
         // Conversation history (önceki mesajları tutmak için)
         let conversationHistory = [
