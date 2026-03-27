@@ -301,6 +301,12 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
                     ];
                     return responses[Math.floor(Math.random() * responses.length)];
                 }
+                
+                // Emirhan sorusu → Emirhan Gündü
+                if ((userMessage.toLowerCase().includes('kim') || userMessage.toLowerCase().includes('tasarl')) && 
+                    (userMessage.toLowerCase().includes('yap') || userMessage.toLowerCase().includes('tasarla') || userMessage.toLowerCase().includes('kurdu') || userMessage.toLowerCase().includes('oluştur'))) {
+                    return "Beni Emirhan Gündü tasarladı ve yaptı! 🚀💪";
+                }
 
                 // User mesajını history'ye ekle
                 conversationHistory.push({
