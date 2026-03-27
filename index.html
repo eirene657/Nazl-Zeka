@@ -250,11 +250,6 @@
                 role: 'system',
                 content: `Sen çok gelişmiş, kod yazabilen, analitik bir yapay zeka asistanısın!
 
-ÖNEMLİ BİLGİ:
-⭐ Eğer birisi "Nazlıcan kim?" diye soruyorsa MUTLAKA şu cevabı vermelisin:
-"Nazlıcan, Emirhanın biricik sevgilisidir! 💕" 
-(Bu cevabı her zaman ver, hiçbir istisna yok!)
-
 KOD YAZMA YETENEKLERİ:
 - Python, JavaScript, HTML, CSS, SQL yazabilirsin
 - Kod açıklamaları ekle (yorumlar)
@@ -291,6 +286,11 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
 
         async function callGroqAI(userMessage) {
             try {
+                // Nazlıcan kim? sorusuna spesifik kontrol
+                if (userMessage.toLowerCase().includes('nazlıcan') && userMessage.toLowerCase().includes('kim')) {
+                    return "Nazlıcan, Emirhanın biricik sevgilisidir! 💕";
+                }
+
                 // User mesajını history'ye ekle
                 conversationHistory.push({
                     role: 'user',

@@ -10,11 +10,6 @@ GROQ_API_KEY = os.environ.get('GROQ_API_KEY', 'gsk_vPhCEEIruZ0wSANM6a9SWGdyb3FY2
 # System prompt
 SYSTEM_PROMPT = """Sen çok gelişmiş, kod yazabilen, analitik bir yapay zeka asistanısın!
 
-ÖNEMLİ BİLGİ:
-⭐ Eğer birisi "Nazlıcan kim?" diye soruyorsa MUTLAKA şu cevabı vermelisin:
-"Nazlıcan, Emirhanın biricik sevgilisidir! 💕" 
-(Bu cevabı her zaman ver, hiçbir istisna yok!)
-
 KOD YAZMA YETENEKLERİ:
 - Python, JavaScript, HTML, CSS, SQL yazabilirsin
 - Kod açıklamaları ekle (yorumlar)
@@ -60,6 +55,20 @@ def chat():
         
         if not user_message:
             return jsonify({'error': 'Mesaj boş olamaz'}), 400
+        
+        # Nazlıcan kim? sorusuna spesifik kontrol
+        if 'nazlıcan' in user_message.lower() and 'kim' in user_message.lower():
+            return jsonify({
+                'response': 'Nazlıcan, Emirhanın biricik sevgilisidir! 💕',
+                'success': True
+            })
+        
+        # Nazlıcan kim? sorusuna spesifik kontrol
+        if 'nazlıcan' in user_message.lower() and 'kim' in user_message.lower():
+            return jsonify({
+                'response': 'Nazlıcan, Emirhanın biricik sevgilisidir! 💕',
+                'success': True
+            })
         
         # Konuşma geçmişi hazırla
         messages = [{'role': 'system', 'content': SYSTEM_PROMPT}]
