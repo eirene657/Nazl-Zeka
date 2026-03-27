@@ -1,0 +1,11 @@
+# .env dosyası
+.env
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+.DS_Store
+venv/
+.vscode/
+.idea/

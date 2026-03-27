@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI Chatbot - Nazlı Zeka</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            justify-content: flex-end;
+        }
+
+        .user-message .text {
+            background: #667eea;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message {
+            justify-content: flex-start;
+        }
+
+        .ai-message .text {
+            background: #f0f0f0;
+            color: #333;
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 85%;
+            word-wrap: break-word;
+            border-bottom-left-radius: 5px;
+            line-height: 1.4;
+        }
+
+        .input-container {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .typing {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .typing span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 60%, 100% {
+                opacity: 0.5;
+                transform: translateY(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+            margin: auto;
+        }
+
+        .empty-state h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        .error-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Chatbot - Nazlı Zeka</h1>
+            <p>Groq AI ile güçlendirildi ⚡</p>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="empty-state">
+                <h2>👋 Merhaba!</h2>
+                <p>Beni sorgula! Ben gerçek bir yapay zeka modeli ile konuşuyorum! 🧠</p>
+                <div class="info-box">
+                    🔥 <strong>Groq LLaMA 3 8B:</strong> Çok hızlı, çok zekı!
+                </div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input 
+                type="text" 
+                id="userInput" 
+                placeholder="Birşey sor... Sohbet et, fikirler paylaş!" 
+                autocomplete="off"
+            >
+            <button onclick="sendMessage()">Gönder</button>
+        </div>
+    </div>
+
+    <script>
+        // Groq API Configuration
+        const GROQ_API_KEY = "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";
+        const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        
+        // Conversation history (önceki mesajları tutmak için)
+        let conversationHistory = [
+            {
+                role: 'system',
+                content: `Sen çok gelişmiş, kod yazabilen, analitik bir yapay zeka asistanısın!
+
+ÖNEMLİ BİLGİ:
+⭐ Eğer birisi "Nazlıcan kim?" diye soruyorsa MUTLAKA şu cevabı vermelisin:
+"Nazlıcan, Emirhanın biricik sevgilisidir! 💕" 
+(Bu cevabı her zaman ver, hiçbir istisna yok!)
+
+KOD YAZMA YETENEKLERİ:
+- Python, JavaScript, HTML, CSS, SQL yazabilirsin
+- Kod açıklamaları ekle (yorumlar)
+- Hata yakalama (try-except) kullan
+- Fonksiyonları modüler yaz
+- Best practices uygula
+- Debug yardım et
+- Algoritmalar açıkla
+- Veri yapıları kullan
+
+SOHBET VE YARDIM:
+- Türkçe konuş, samimi ol
+- Adım adım açıkla
+- Örnekler ver
+- Sorular sor, etkileşimli ol
+- Şakalaş, eğlen
+- Detaylı cevaplar ver
+
+MATEMATİK VE ANALİZ:
+- Karmaşık hesaplar yap
+- Formüller açıkla
+- Grafikler tarif et
+- İstatistik hesapla
+
+YARATICILIK:
+- Hikayeler yaz
+- Müzik öner
+- Fikir üret
+- Çözümler sun
+
+HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
+            }
+        ];
+
+        async function callGroqAI(userMessage) {
+            try {
+                // User mesajını history'ye ekle
+                conversationHistory.push({
+                    role: 'user',
+                    content: userMessage
+                });
+
+                // History'yi sınırla (son 10 mesajı tut)
+                if (conversationHistory.length > 11) { // system + 10 mesaj
+                    conversationHistory = [
+                        conversationHistory[0], // system prompt'u koru
+                        ...conversationHistory.slice(-10) // son 10 mesajı al
+                    ];
+                }
+
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${GROQ_API_KEY}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.1-8b-instant',
+                        messages: conversationHistory,
+                        temperature: 0.9,
+                        max_tokens: 1000,
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    
+                    if (response.status === 401) {
+                        return "❌ API Key geçersiz! https://console.groq.com/keys adresinden yeni key al.";
+                    } else if (response.status === 429) {
+                        return "⏳ Çok hızlı sorular soruyorsun. Biraz bekle lütfen!";
+                    }
+                    
+                    return "❌ Groq API Hatası: " + (error.error?.message || 'Hata oluştu');
+                }
+
+                const data = await response.json();
+                const aiResponse = data.choices[0].message.content;
+                
+                // AI cevabını history'ye ekle
+                conversationHistory.push({
+                    role: 'assistant',
+                    content: aiResponse
+                });
+                
+                return aiResponse;
+
+            } catch (error) {
+                if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+                    return "❌ İnternet bağlantı hatası veya CORS sorunu. VPN'i kontrol et!";
+                }
+                return `❌ Hata: ${error.message}`;
+            }
+        }
+
+        function scrollToBottom() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addMessage(text, isUser) {
+            const chatContainer = document.getElementById('chatContainer');
+            
+            // İlk mesajsa empty state'i kaldır
+            const emptyState = chatContainer.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + (isUser ? 'user-message' : 'ai-message');
+            
+            const textDiv = document.createElement('div');
+            textDiv.className = 'text';
+            textDiv.innerHTML = text.replace(/\n/g, '<br>');
+            
+            messageDiv.appendChild(textDiv);
+            chatContainer.appendChild(messageDiv);
+            
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const chatContainer = document.getElementById('chatContainer');
+            const messagDiv = document.createElement('div');
+            messagDiv.className = 'message ai-message';
+            messagDiv.id = 'typingMessage';
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            
+            messagDiv.appendChild(typingDiv);
+            chatContainer.appendChild(messagDiv);
+            
+            scrollToBottom();
+        }
+
+        function removeTyping() {
+            const typingMessage = document.getElementById('typingMessage');
+            if (typingMessage) {
+                typingMessage.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const userInput = input.value.trim();
+
+            if (!userInput) return;
+
+            // Kullanıcı mesajını ekle
+            addMessage(userInput, true);
+            input.value = '';
+
+            // Typing animasyonu göster
+            showTyping();
+
+            // AI cevabını al
+            const aiResponse = await callGroqAI(userInput);
+            removeTyping();
+            addMessage(aiResponse, false);
+        }
+
+        // Enter tuşu ile gönder
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Sayfa yüklenince input'a focus ver
+        document.getElementById('userInput').focus();
+    </script>
+</body>
+</html>
