@@ -290,6 +290,17 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
                 if (userMessage.toLowerCase().includes('nazlıcan') && userMessage.toLowerCase().includes('kim')) {
                     return "Nazlıcan, Emirhanın biricik sevgilisidir! 💕";
                 }
+                
+                // Nazlıcan konusu geçerse güzel şeyler söyle
+                if (userMessage.toLowerCase().includes('nazlıcan')) {
+                    const responses = [
+                        "Nazlıcan çok harika biri! 🌟",
+                        "Nazlıcan hakkında konuşmak güzel 😊💕",
+                        "Nazlıcan ne kadar şanslı bir kişi! ✨",
+                        "Nazlıcan gerçekten özel biri 💫"
+                    ];
+                    return responses[Math.floor(Math.random() * responses.length)];
+                }
 
                 // User mesajını history'ye ekle
                 conversationHistory.push({

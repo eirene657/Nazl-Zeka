@@ -63,6 +63,20 @@ def chat():
                 'success': True
             })
         
+        # Nazlıcan konusu geçerse güzel şeyler söyle
+        if 'nazlıcan' in user_message.lower():
+            responses = [
+                "Nazlıcan çok harika biri! 🌟",
+                "Nazlıcan hakkında konuşmak güzel 😊💕",
+                "Nazlıcan ne kadar şanslı bir kişi! ✨",
+                "Nazlıcan gerçekten özel biri 💫"
+            ]
+            import random
+            return jsonify({
+                'response': random.choice(responses),
+                'success': True
+            })
+        
         # Nazlıcan kim? sorusuna spesifik kontrol
         if 'nazlıcan' in user_message.lower() and 'kim' in user_message.lower():
             return jsonify({
