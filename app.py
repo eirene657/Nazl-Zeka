@@ -5,11 +5,7 @@ import os
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Groq API Configuration
-GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-
-if not GROQ_API_KEY:
-    raise ValueError('GROQ_API_KEY environment variable not set')
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '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')
 
 # System prompt
 SYSTEM_PROMPT = """Sen çok gelişmiş, kod yazabilen, analitik bir yapay zeka asistanısın!
