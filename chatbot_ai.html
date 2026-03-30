@@ -386,6 +386,11 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
                     return emirhanResponses[Math.floor(Math.random() * emirhanResponses.length)];
                 }
 
+                // Nazlıcan kim? - SADECE KİM sorusuna
+                if (msg.includes('nazlıcan') && msg.includes('kim') && !msg.includes('hakkında') && !msg.includes('profil') && !msg.includes('kaç yaş')) {
+                    return "Nazlıcan, Emirhanın biricik sevgilisidir! 💕";
+                }
+
                 // NAZLICAN KİŞİLİK PROFİLİ
                 if ((msg.includes('nazlıcan') && (msg.includes('kim') || msg.includes('hakkında') || msg.includes('kaç yaş') || msg.includes('profil'))) && !msg.includes('emirhan')) {
                     const nazlicanResponses = [

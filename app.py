@@ -156,6 +156,13 @@ def chat():
             import random
             return jsonify({'response': random.choice(responses), 'success': True})
 
+        # Nazlıcan kim? - SADECE KİM sorusuna
+        if 'nazlıcan' in msg and 'kim' in msg and 'hakkında' not in msg and 'profil' not in msg and 'kaç yaş' not in msg:
+            return jsonify({
+                'response': 'Nazlıcan, Emirhanın biricik sevgilisidir! 💕',
+                'success': True
+            })
+
         # NAZLICAN KİŞİLİK PROFİLİ
         if ('nazlıcan' in msg and ('kim' in msg or 'hakkında' in msg or 'kaç yaş' in msg or 'profil' in msg)) and 'emirhan' not in msg:
             responses = [
