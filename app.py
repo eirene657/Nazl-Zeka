@@ -116,13 +116,6 @@ def chat():
                 'success': True
             })
         
-        # Nazlıcan kim? sorusuna spesifik kontrol
-        if 'nazlıcan' in user_message.lower() and 'kim' in user_message.lower():
-            return jsonify({
-                'response': 'Nazlıcan, Emirhanın biricik sevgilisidir! 💕',
-                'success': True
-            })
-        
         # Emirhan sorusu → Emirhan Gündü
         if ('kim' in user_message.lower() or 'tasarl' in user_message.lower()) and \
            ('yap' in user_message.lower() or 'tasarla' in user_message.lower() or 'kurdu' in user_message.lower() or 'oluştur' in user_message.lower()):

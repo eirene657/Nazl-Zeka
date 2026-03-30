@@ -348,22 +348,6 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
                     return romanticResponses[Math.floor(Math.random() * romanticResponses.length)];
                 }
 
-                // Nazlıcan kim? sorusuna spesifik kontrol
-                if (msg.includes('nazlıcan') && msg.includes('kim')) {
-                    return "Nazlıcan, Emirhanın biricik sevgilisidir! 💕";
-                }
-                
-                // Nazlıcan konusu geçerse güzel şeyler söyle
-                if (userMessage.toLowerCase().includes('nazlıcan')) {
-                    const responses = [
-                        "Nazlıcan çok harika biri! 🌟",
-                        "Nazlıcan hakkında konuşmak güzel 😊💕",
-                        "Nazlıcan ne kadar şanslı bir kişi! ✨",
-                        "Nazlıcan gerçekten özel biri 💫"
-                    ];
-                    return responses[Math.floor(Math.random() * responses.length)];
-                }
-                
                 // Emirhan sorusu → Emirhan Gündü
                 if ((userMessage.toLowerCase().includes('kim') || userMessage.toLowerCase().includes('tasarl')) && 
                     (userMessage.toLowerCase().includes('yap') || userMessage.toLowerCase().includes('tasarla') || userMessage.toLowerCase().includes('kurdu') || userMessage.toLowerCase().includes('oluştur'))) {
