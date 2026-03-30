@@ -134,8 +134,8 @@ def chat():
         # YIL DÖNÜMÜ HESAPLAYICI
         if 'kaç gün' in msg or 'kaç ay' in msg or 'ne kadar' in msg or 'yıldönüm' in msg:
             from datetime import datetime
-            lastMeetDate = datetime(2024, 12, 18)  # 18 Aralık 2024
-            friendsDate = datetime(2025, 2, 1)  # 1 Şubat 2025
+            lastMeetDate = datetime(2025, 12, 18)  # 18 Aralık 2025
+            friendsDate = datetime(2026, 2, 1)  # 1 Şubat 2026
             today = datetime.now()
             
             meetDays = (today - lastMeetDate).days
