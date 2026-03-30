@@ -5,7 +5,7 @@ import os
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Groq API Configuration
-GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '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')
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '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')
 
 # System prompt
 SYSTEM_PROMPT = """Sen çok gelişmiş, kod yazabilen, analitik bir yapay zeka asistanısın!
