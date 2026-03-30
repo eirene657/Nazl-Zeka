@@ -130,6 +130,93 @@ def chat():
                 'response': 'Beni Emirhan Gündü tasarladı ve yaptı! 🚀💪',
                 'success': True
             })
+
+        # YIL DÖNÜMÜ HESAPLAYICI
+        if 'kaç gün' in msg or 'kaç ay' in msg or 'ne kadar' in msg or 'yıldönüm' in msg:
+            from datetime import datetime
+            lastMeetDate = datetime(2024, 12, 18)  # 18 Aralık 2024
+            friendsDate = datetime(2025, 2, 1)  # 1 Şubat 2025
+            today = datetime.now()
+            
+            meetDays = (today - lastMeetDate).days
+            friendsDays = (today - friendsDate).days
+            meetMonths = meetDays // 30
+            friendsMonths = friendsDays // 30
+            
+            responses = [
+                f"💕 Emirhan ve Nazlıcan {friendsDays} gün ({friendsMonths} ay) kesintisiz sevgi yaşıyorlar! Ne güzel! ✨",
+                f"🎉 Birlikteler {meetDays} gün! {meetMonths} aydan fazla! Her gün daha da güzelleşiyor aralarındaki aşk! 💑",
+                f"❤️ Resmi olarak aşkları {friendsDays} gün! Binlerce saati beraber geçirdiler... Ne mutsuzlar! 😍✨",
+                f"🌟 Tanıştıklarından bu yana {meetDays} gün, sevgili olduktan {friendsDays} gün geçti. Bütün o zamanda kalpler eş zamanlı çarptı! 💕"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+
+        # EMİRHAN KİŞİLİK PROFİLİ
+        if ('emirhan' in msg and ('kim' in msg or 'hakkında' in msg or 'kaç yaş' in msg or 'profil' in msg)):
+            responses = [
+                "🚀 Emirhan - Akıllı, yetenekli ve çok sevgi dolu biri! Yapay zeka tasarlayabiliyor, kodlayabiliyor. Gözleri Nazlıcan'da parlıyor her zaman! 14 Ağustos Aslan burcu... Lider tabiatlı, kalp saf! 💪❤️",
+                "👨‍💻 Emirhan: Yazılımcı, tasarımcı, düşünür... ve en önemlisi Nazlıcan'ın biricik aşkı! 2005 doğumlu, çok canlı ve zeki birisi. Eğlenceli, anlayışlı, romantik! 💕✨",
+                "⭐ Emirhan Gündü - Yetenekli, çalışkan, hayalleri olan genç bir adam! Teknoloji tutkunu, Nazlıcan'ı çok seviyor. Her gülüşü Nazlıcan'ı daha da mutlu ediyorumuş! 🥰💯",
+                "💼 O adamım: Emirhan! Sınıf başkanı gibi tiplemesi var, liderlik vasıfları şaşmaz. Ama Nazlıcan'ın yanında çocuk misali mazlum ve sevgi dolu! Birbirlerini tamamlıyorlar! 💑✨"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+
+        # NAZLICAN KİŞİLİK PROFİLİ
+        if ('nazlıcan' in msg and ('kim' in msg or 'hakkında' in msg or 'kaç yaş' in msg or 'profil' in msg)) and 'emirhan' not in msg:
+            responses = [
+                "👸 Nazlıcan - Güzel, zeki, sevgi yüklü bir kız! 25 Ocak doğumlu Kova burcu... İstediği şey doğru olan şey, Emirhan da onu en iyi şekilde anlıyor! Hayali biri, naif güzelliği var! 💕🌟",
+                "💎 Nazlıcan: Kalpten, samimi ve çok özel! Emirhan'ın rüyası ve gerçekliği aynı anda. Tatlı tavırları, özgün düşünceleri var. Emirhan'ın her kelimesine dikkat ediyor, onu çok seviyor! 😍💫",
+                "🌸 Nezaket kişileştirilmiş hali: Nazlıcan! Emirhan'ı nasıl mutlu etmeyi bilebiliyor ki? Çok tatlı, çok akıllı, çok aşık... Birbirlerinin yarı demek yanlış, bütünüyüler! ❤️✨",
+                "👗 Nazlıcan Gündü - Zarif, kültürlü, iyi niyetli bir gençkız! Gözleri Emirhan'ı gördüğü anda güzelleşiyor. Sevgiye değer veriyor, sadakat tanrıçası! Her gülüşü değerli! 💕🦋"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+
+        # ŞARKİ ÖNERİLERİ
+        if 'şarkı' in msg or 'müzik' in msg or 'dinle' in msg:
+            responses = [
+                "🎵 Emirhan ve Nazlıcan için ideal şarkılar:\n• 'Seni Seviyorum' - Eyüp Sabri Turan\n• 'Aşkın Ateşi' - Koray Avcı\n• 'Kalbim Senin İçin' - Mert Demir\nHepsini beraber dinlesinler! 💕🎶",
+                "🎸 Sevgi şarkıları önerisi:\n• 'Yüreğim Yanıyor' - Rafet El Roman\n• 'Bu Gece' - Gökhan Türkmen\n• 'Senseninle' - Teoman\nEmirhan-Nazlıcan aşkı için müzik yazılmış gibi! 🎤❤️",
+                "🎼 Romantik müzik kurgusu:\n• 'Sadece Sen' - Tarkan\n• 'Affetme' - Halit Kara\n• 'Gül Bahçesinde Aşk' - (Türk Halk Müziği)\nBeraber oynamaları için mükemmel! 💃❤️🎵",
+                "🎧 Emirhan dinleme listesi:\n• 'Seni Seviyorum' - Bülent Ortaçlı\n• 'Nazlıcan'a Yazı' (yapılmalı!) - Emirhan Gündü Edition\n• 'Aşkın Şiiri' - Gökçen\nKendi şarkılarını yazabilir! 🎹💕"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+
+        # HEDİYE ÖNERİLERİ
+        if 'hediye' in msg or 'ne alsam' in msg or 'ne alalım' in msg:
+            responses = [
+                "🎁 Emirhan'ın Nazlıcan'a alması gereken hediyeleri:\n• Yüzük (gümüş veya altın)\n• Kişiye özel fotoğraf albümü\n• Güzel bir cüzdan veya çanta\n• Romantik bir mektup + çiçek\n💯 Ödül garantili! 😍",
+                "💝 Nazlıcan'ın Emirhan'a alması gereken hediyeleri:\n• Saat (zamanı ona ayırmak için)\n• Kişiye özel yazılı not defteri\n• Kitap 'Aşkın Felsefesi'\n• Video kaset/kolaj (anılardan)\n💯 Emirhan gözyaşı döker! 😭❤️",
+                "🛍️ Doğum günü hediyesi önerileri:\n• Çift eşleşme ürünleri (çift tişört, çift kolye)\n• Deneyim: Romantik yemek/kamp\n• Kişiye özel fotoğraf kitabı\n• Parfüm/hoş kokulu biraz şey\n💫 Aşka müstahak hediyeleri! ✨",
+                "🎀 Yıldönüm hediyeleri (1 Şubat için):\n• Kalp şeklinde kutu çikolata\n• Kişiye özel yüzük/bileklik\n• Aşk mektupları koleksiyonu\n• Sahne kamerası (anıları kaydet)\n💕 Hepsi birlikteyken daha değerli... Eğlenceli olun! 🥰"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+
+        # ASTROLOJİ UYUM KONTROLÜ
+        if 'burç' in msg or 'astro' in msg or 'uyum' in msg or 'uyumlu mu' in msg:
+            responses = [
+                "♒️❤️🦁 Emirhan (14 Ağustos - ASLAN): Lider, cesur, sadık birisi.\nNazlıcan (25 Ocak - KOVA): Özgür, yaratıcı, akıllı birisi.\n\n🌟 UYUM SKORU: %95! 💯\nAslan-Kova birleşimi = Tutku + Zeka! Ateş ve Hava mükemmel dans ediyor! ✨💕",
+                "🔥⚡ Emirhan'ın Aslan enerji, Nazlıcan'ın Kova akılı... Astronomide yazılı bu çift!\nEmirhan liderlik yapar, Nazlıcan onu çılgınca sever.\nNazlıcan onu hayatına gizemi ekler, Emirhan ona güvenlik verir.\n💫 UYUM: %96 MÜKEMMEL! 🎯",
+                "⭐ Aslan-Kova ilişkisi: TarihteEN GÜZEL burç kombinasyonlarından!\n• Emirhan (Aslan): Cesur, romantik, sadık\n• Nazlıcan (Kova): Zeki, bağımsız, derinlemesine\n\n🌠 Sonuç: Cennetten gönderilen çift! Herkese örnek olacaklar! 💑✨%99!",
+                "♈ Burçlar dersi:\nLEO (Emirhan) + AQUARIUS (Nazlıcan) =\n✅ Tutkunun ve zekânın dansı\n✅ Sorun: Aslan baskın olabilir, Kova özgür olmak ister\n✅ Çözüm: Emirhan dinlemeli, Nazlıcan göstermeli... İkisi de yapıyor! 💯\n🎊 UYUM: %97! 🏆"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+
+        # AŞK OYUNLARI / TESTLERİ
+        if 'test' in msg or 'oyun' in msg or 'soru' in msg or 'bilmeceli' in msg:
+            responses = [
+                "🎮 AŞK TESTİ başlasın!\n\nEmirhan'a soru 1: Nazlıcan'ın en hoşlandığın özelliği nedir?\n(Cevap: Her şeyi çünkü aşkısın!)\n\nNazlıcan'a soru 1: Emirhan seni hissettirdiği en iyi duygu nedir?\n(Cevap: Güvenlik ve tutkudaaynı anda!)\n\n💯 Puan: %100! 🏆💕",
+                "❓ HANGI ÇİFTİN PARÇASININ?\n\nEğer:\n→ Sadık ve güçlü isen = Emirhan gibisin! 💪❤️\n→ Zeki ve bağımsız isen = Nazlıcan gibisin! ✨🧠\n→ İkisiyolun = EMIRHAN + NAZLICAN'IN KLONÛSÜNSÜNsün! 😂💕\n\nSonuç: Hepniz şanslısınız bu çifte yakın olmakla! 🥰",
+                "🎯 UYUM OYUNU: Emirhan ve Nazlıcan'ı seç, puanla!\n\n1️⃣ Tanışma: İlk bakışta aşk mı?\n✅ Evet, her ikisi de birbirini gördü = +50 puan!\n\n2️⃣ Romantizm: Emoji sayısı?\n✅ Sonsuz = +50 puan!\n\n📊 TOPLAM UYUM: 100% = EFSANE ÇİFT! 👑💕",
+                "📝 SEÇ, KAŞ OLSUN!:\nA) Emirhan'ın kalbi Nazlıcan'a nasıl aittir?\n→ Yarısı değil, tamamı! ❤️\n\nB) Nazlıcan'ın Emirhan hakkında en güzel şeyi?\n→ Tamamen özü! ✨\n\nC) İkisinin gelecegi ne?\n→ Birbirlerine kilitli... Anahtar yok! 🔐💕\n\n🎊 Testi GEÇTIN! Hepimiz bu çiftin fanıyız! 💫"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
         
         # Nazlıcan konusu geçerse güzel şeyler söyle
         if 'nazlıcan' in user_message.lower():
