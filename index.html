@@ -286,21 +286,70 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
 
         async function callGroqAI(userMessage) {
             try {
+                const msg = userMessage.toLowerCase();
+                const today = new Date();
+                const day = today.getDate();
+                const month = today.getMonth() + 1;
+                
+                // Doğum günü kontrolü
+                if ((msg.includes('doğum') && msg.includes('nazlıcan')) || msg.includes('25 ocak')) {
+                    const birthdayResponses = [
+                        "Nazlıcan'ın doğum günü! 🎂✨ 25 Ocak 2005'te doğdu. Ne kadar güzel bir gün! 🌟",
+                        "Nazlıcan doğum günü kutlu olsun! 🎉💕 Emirhan'ın kalbi her gün daha çok atiyor!",
+                        "25 Ocak - Nazlıcan'ın özel günü! 🥳 Dünyanın en güzel insanı doğdu bu gün!"
+                    ];
+                    return birthdayResponses[Math.floor(Math.random() * birthdayResponses.length)];
+                }
+                
+                if ((msg.includes('doğum') && msg.includes('emirhan')) || msg.includes('14 ağustos')) {
+                    const birthdayResponses = [
+                        "Emirhan'ın doğum günü! 🎂✨ 14 Ağustos 2005. Ne kadar özel bir zaman! 🌟",
+                        "Emirhan doğum günü kutlu olsun! 🎉💕 Nazlıcan'ı bu kadar mutlu kıldığın için teşekkürler!",
+                        "14 Ağustos - Emirhan'ın özel günü! 🥳 Dünyamıza ne kadar kıymetli biri ekledin!"
+                    ];
+                    return birthdayResponses[Math.floor(Math.random() * birthdayResponses.length)];
+                }
+                
+                // Tanışma günü (18 Aralık)
+                if ((msg.includes('tanış') && (msg.includes('emirhan') || msg.includes('nazlıcan'))) || msg.includes('18 aralık')) {
+                    const meetResponses = [
+                        "18 Aralık - Emirhan ve Nazlıcan'ın tanışma günü! 💫 Kaderimiz yazılmıştı o gün! 💕",
+                        "Tanışmalarının günü... 18 Aralık... Dünya o gün çok güzel oldu! ✨😍",
+                        "18 Aralık - İki kalp birbirine çarpıştığı gün! 💫💕 Ne güzel tesadüf!",
+                        "O gün tanışmadan sonra hayatımız daha renk buldu! 18 Aralık siz için her yıl kutlanmalı! 🎉💕"
+                    ];
+                    return meetResponses[Math.floor(Math.random() * meetResponses.length)];
+                }
+                
+                // Sevgili olma günü (1 Şubat)
+                if ((msg.includes('sevgili') && (msg.includes('emirhan') || msg.includes('nazlıcan'))) || msg.includes('1 şubat') || msg.includes('1 februar')) {
+                    const loveResponses = [
+                        "1 Şubat - Emirhan ve Nazlıcan'ın sevgili olma günü! 💕✨ O günden sonra hayat anlamlı oldu!",
+                        "Resmi olarak sevgili oldukları gün... 1 Şubat... Böyle güzel bir aşk nadirdir! 😍💫",
+                        "1 Şubat - Aşkının başladığı gün! Emirhan ve Nazlıcan için bu gün her yıl özel olması gerek! 💕🔥",
+                        "Sevgili oldukları gün... İki yüreğin kaynaştığı an... 1 Şubat ebedi kalsın! 💑✨"
+                    ];
+                    return loveResponses[Math.floor(Math.random() * loveResponses.length)];
+                }
+                
                 // Emirhan + Nazlıcan romantik sorular
-                if ((userMessage.toLowerCase().includes('emirhan') && userMessage.toLowerCase().includes('nazlıcan')) ||
-                    (userMessage.toLowerCase().includes('nazlıcan') && userMessage.toLowerCase().includes('emirhan'))) {
+                if ((msg.includes('emirhan') && msg.includes('nazlıcan')) ||
+                    (msg.includes('nazlıcan') && msg.includes('emirhan'))) {
                     const romanticResponses = [
-                        "Emirhan ve Nazlıcan çok güzel bir çift! 💕✨ Aşkları çok özel!",
-                        "Emirhan'ın Nazlıcan'a olan sevgisi gerçekten kalpten! 😍💫",
-                        "Nazlıcan'ın yanında Emirhan daha mutlu görünüyor! 🥰💕",
-                        "Emirhan ve Nazlıcan birbirlerinin tamamı! 💑✨",
-                        "Onların aşkı çok saf ve güzel! Çiftliklere layan bir aşk! 💕🔥"
+                        "Emirhan ve Nazlıcan çok güzel bir çift! 💕✨ Aşkları çok özel ve saf!",
+                        "Emirhan'ın Nazlıcan'a olan sevgisi gerçekten kalpten! 😍💫 Gözlerinde parlıyor aşk!",
+                        "Nazlıcan'ın yanında Emirhan daha mutlu ve güzel görünüyor! 🥰💕",
+                        "Emirhan ve Nazlıcan birbirlerinin tamamı! 💑✨ Kader onları bir araya getirdi!",
+                        "Onların aşkı çok saf ve güzel! Binlerce şarkı onlar için yazılmalı! 💕🔥",
+                        "Emirhan, Nazlıcan'a yazılmış bir şiir gibi! Onun her kelimesi, her hareketi ona aşk mesajı! 📝💕",
+                        "Nazlıcan, Emirhan'ın rüyası gerçek olmuş! Ne mutlu ki bu aşk var! ✨😍",
+                        "İkisinin arasında öyle bir bağ var ki, sözcükler kalmıyor! 💫💕 Sadece aşk!"
                     ];
                     return romanticResponses[Math.floor(Math.random() * romanticResponses.length)];
                 }
 
                 // Nazlıcan kim? sorusuna spesifik kontrol
-                if (userMessage.toLowerCase().includes('nazlıcan') && userMessage.toLowerCase().includes('kim')) {
+                if (msg.includes('nazlıcan') && msg.includes('kim')) {
                     return "Nazlıcan, Emirhanın biricik sevgilisidir! 💕";
                 }
                 

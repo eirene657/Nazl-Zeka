@@ -52,22 +52,66 @@ def chat():
         data = request.json
         user_message = data.get('message', '')
         conversation_history = data.get('history', [])
+        msg = user_message.lower()
         
         if not user_message:
             return jsonify({'error': 'Mesaj boş olamaz'}), 400
         
-        # Emirhan + Nazlıcan romantik sorular
-        if ('emirhan' in user_message.lower() and 'nazlıcan' in user_message.lower()) or \
-           ('nazlıcan' in user_message.lower() and 'emirhan' in user_message.lower()):
+        # Doğum günü kontrolü
+        if (('doğum' in msg and 'nazlıcan' in msg) or '25 ocak' in msg or '25.1' in msg):
             responses = [
-                "Emirhan ve Nazlıcan çok güzel bir çift! 💕✨ Aşkları çok özel!",
-                "Emirhan'ın Nazlıcan'a olan sevgisi gerçekten kalpten! 😍💫",
-                "Nazlıcan'ın yanında Emirhan daha mutlu görünüyor! 🥰💕",
-                "Emirhan ve Nazlıcan birbirlerinin tamamı! 💑✨",
-                "Onların aşkı çok saf ve güzel! Çiftliklere layan bir aşk! 💕🔥"
+                "Nazlıcan'ın doğum günü! 🎂✨ 25 Ocak 2005'te doğdu. Ne kadar güzel bir gün! 🌟",
+                "Nazlıcan doğum günü kutlu olsun! 🎉💕 Emirhan'ın kalbi her gün daha çok atiyor!",
+                "25 Ocak - Nazlıcan'ın özel günü! 🥳 Dünyanın en güzel insanı doğdu bu gün!"
             ]
             import random
-            return jsonify({
+            return jsonify({'response': random.choice(responses), 'success': True})
+        
+        if (('doğum' in msg and 'emirhan' in msg) or '14 ağustos' in msg or '14.8' in msg):
+            responses = [
+                "Emirhan'ın doğum günü! 🎂✨ 14 Ağustos 2005. Ne kadar özel bir zaman! 🌟",
+                "Emirhan doğum günü kutlu olsun! 🎉💕 Nazlıcan'ı bu kadar mutlu kıldığın için teşekkürler!",
+                "14 Ağustos - Emirhan'ın özel günü! 🥳 Dünyamıza ne kadar kıymetli biri ekledin!"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+        
+        # Tanışma günü (18 Aralık)
+        if (('tanış' in msg and ('emirhan' in msg or 'nazlıcan' in msg)) or '18 aralık' in msg or '18.12' in msg):
+            responses = [
+                "18 Aralık - Emirhan ve Nazlıcan'ın tanışma günü! 💫 Kaderimiz yazılmıştı o gün! 💕",
+                "Tanışmalarının günü... 18 Aralık... Dünya o gün çok güzel oldu! ✨😍",
+                "18 Aralık - İki kalp birbirine çarpıştığı gün! 💫💕 Ne güzel tesadüf!",
+                "O gün tanışmadan sonra hayatımız daha renk buldu! 18 Aralık siz için her yıl kutlanmalı! 🎉💕"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+        
+        # Sevgili olma günü (1 Şubat)
+        if (('sevgili' in msg and ('emirhan' in msg or 'nazlıcan' in msg)) or '1 şubat' in msg or '1.2' in msg or '1 februar' in msg):
+            responses = [
+                "1 Şubat - Emirhan ve Nazlıcan'ın sevgili olma günü! 💕✨ O günden sonra hayat anlamlı oldu!",
+                "Resmi olarak sevgili oldukları gün... 1 Şubat... Böyle güzel bir aşk nadirdir! 😍💫",
+                "1 Şubat - Aşkının başladığı gün! Emirhan ve Nazlıcan için bu gün her yıl özel olması gerek! 💕🔥",
+                "Sevgili oldukları gün... İki yüreğin kaynaştığı an... 1 Şubat ebedi kalsın! 💑✨"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
+        
+        # Emirhan + Nazlıcan romantik sorular
+        if ('emirhan' in msg and 'nazlıcan' in msg) or ('nazlıcan' in msg and 'emirhan' in msg):
+            responses = [
+                "Emirhan ve Nazlıcan çok güzel bir çift! 💕✨ Aşkları çok özel ve saf!",
+                "Emirhan'ın Nazlıcan'a olan sevgisi gerçekten kalpten! 😍💫 Gözlerinde parlıyor aşk!",
+                "Nazlıcan'ın yanında Emirhan daha mutlu ve güzel görünüyor! 🥰💕",
+                "Emirhan ve Nazlıcan birbirlerinin tamamı! 💑✨ Kader onları bir araya getirdi!",
+                "Onların aşkı çok saf ve güzel! Binlerce şarkı onlar için yazılmalı! 💕🔥",
+                "Emirhan, Nazlıcan'a yazılmış bir şiir gibi! Onun her kelimesi, her hareketi ona aşk mesajı! 📝💕",
+                "Nazlıcan, Emirhan'ın rüyası gerçek olmuş! Ne mutlu ki bu aşk var! ✨😍",
+                "İkisinin arasında öyle bir bağ var ki, sözcükler kalmıyor! 💫💕 Sadece aşk!"
+            ]
+            import random
+            return jsonify({'response': random.choice(responses), 'success': True})
                 'response': random.choice(responses),
                 'success': True
             })
