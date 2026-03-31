@@ -442,30 +442,58 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             document.querySelector('.theme-toggle').textContent = theme === 'light' ? '☀️' : '🌙';
         }
 
-        // ÇIFT İSTATİSTİKLERİ
+        // ÇIFT İSTATISTIKLERİ
+        function calculateDateDifference(startDate, endDate) {
+            const oneDay = 1000 * 60 * 60 * 24;
+            const adjustedStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+            const adjustedEnd = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+            if (adjustedEnd < adjustedStart) {
+                return { totalDays: 0, years: 0, months: 0, days: 0 };
+            }
+
+            let years = adjustedEnd.getFullYear() - adjustedStart.getFullYear();
+            let months = adjustedEnd.getMonth() - adjustedStart.getMonth();
+            let days = adjustedEnd.getDate() - adjustedStart.getDate();
+
+            if (days < 0) {
+                months -= 1;
+                const prevMonth = new Date(adjustedEnd.getFullYear(), adjustedEnd.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
+
+            const totalMonths = years * 12 + months;
+            const totalDays = Math.floor((adjustedEnd - adjustedStart) / oneDay);
+            return { totalDays, years, months: totalMonths, days };
+        }
+
         function getRelationshipStats() {
             const meetDate = new Date(2025, 11, 18); // 18 Aralık 2025
             const relationshipDate = new Date(2026, 0, 1); // 1 Şubat 2026
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            const daysTogether = Math.max(0, Math.floor((today - meetDate) / (1000 * 60 * 60 * 24)));
-            const daysAsCouple = Math.max(0, Math.floor((today - relationshipDate) / (1000 * 60 * 60 * 24)));
-            const months = Math.floor(daysTogether / 30);
-            const coupleMonths = Math.floor(daysAsCouple / 30);
+            const together = calculateDateDifference(meetDate, today);
+            const couple = calculateDateDifference(relationshipDate, today);
 
             return {
-                daysTogether: daysTogether,
-                daysAsCouple: daysAsCouple,
-                months: months,
-                coupleMonths: coupleMonths
+                daysTogether: together.totalDays,
+                togetherMonths: together.months,
+                togetherDays: together.days,
+                daysAsCouple: couple.totalDays,
+                coupleMonths: couple.months,
+                coupleDays: couple.days
             };
         }
 
         function displayStats() {
             const stats = getRelationshipStats();
-            const togetherText = stats.daysTogether >= 0 ? `${stats.daysTogether} gün (${stats.months} ay ${stats.daysTogether % 30} gün)` : 'Yakında';
-            const coupleText = stats.daysAsCouple >= 0 ? `${stats.daysAsCouple} gün (${stats.coupleMonths} ay ${stats.daysAsCouple % 30} gün)` : 'Yakında';
+            const togetherText = stats.daysTogether >= 0 ? `${stats.daysTogether} gün (${stats.togetherMonths} ay ${stats.togetherDays} gün)` : 'Yakında';
+            const coupleText = stats.daysAsCouple >= 0 ? `${stats.daysAsCouple} gün (${stats.coupleMonths} ay ${stats.coupleDays} gün)` : 'Yakında';
 
             document.getElementById('daysStats').innerText = togetherText;
             document.getElementById('relationshipStats').innerText = coupleText;
