@@ -256,6 +256,7 @@
                 <div><div class="stat-item" id="daysStats">0 gün</div>Beraber</div>
                 <div><div class="stat-item" id="relationshipStats">0 gün</div>Sevgili</div>
             </div>
+            <div id="statsHint" style="font-size: 10px; margin-top: 6px; color: var(--text-secondary);">Başlangıç: 1 Şubat 2026</div>
         </div>
 
         <div id="quoteWidget" class="quote-widget" style="display: none;">
@@ -447,21 +448,27 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            const daysTogether = Math.floor((today - meetDate) / (1000 * 60 * 60 * 24));
-            const daysAsCouple = Math.floor((today - relationshipDate) / (1000 * 60 * 60 * 24));
+            const daysTogether = Math.max(0, Math.floor((today - meetDate) / (1000 * 60 * 60 * 24)));
+            const daysAsCouple = Math.max(0, Math.floor((today - relationshipDate) / (1000 * 60 * 60 * 24)));
             const months = Math.floor(daysTogether / 30);
-            
+            const coupleMonths = Math.floor(daysAsCouple / 30);
+
             return {
                 daysTogether: daysTogether,
                 daysAsCouple: daysAsCouple,
-                months: months
+                months: months,
+                coupleMonths: coupleMonths
             };
         }
 
         function displayStats() {
             const stats = getRelationshipStats();
-            document.getElementById('daysStats').innerText = stats.daysTogether > 0 ? stats.daysTogether + ' gün' : 'Yakında';
-            document.getElementById('relationshipStats').innerText = stats.daysAsCouple > 0 ? stats.daysAsCouple + ' gün' : 'Yakında';
+            const togetherText = stats.daysTogether >= 0 ? `${stats.daysTogether} gün (${stats.months} ay ${stats.daysTogether % 30} gün)` : 'Yakında';
+            const coupleText = stats.daysAsCouple >= 0 ? `${stats.daysAsCouple} gün (${stats.coupleMonths} ay ${stats.daysAsCouple % 30} gün)` : 'Yakında';
+
+            document.getElementById('daysStats').innerText = togetherText;
+            document.getElementById('relationshipStats').innerText = coupleText;
+            document.getElementById('statsHint').innerText = `Sevgili olma başlangıcı: 1 Şubat 2026. Bugün: ${new Date().toLocaleDateString('tr-TR')}`;
             document.getElementById('statsWidget').style.display = 'block';
         }
 
