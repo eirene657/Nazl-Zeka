@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0f0f0f;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,32 +22,36 @@
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: #1a1a1a;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
             width: 100%;
             max-width: 600px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             height: 80vh;
+            border: 1px solid #2a2a2a;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #0f0f0f;
+            color: #ffffff;
             padding: 20px;
             text-align: center;
+            border-bottom: 1px solid #2a2a2a;
         }
 
         .header h1 {
             font-size: 24px;
             margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .header p {
             font-size: 14px;
-            opacity: 0.9;
+            opacity: 0.7;
+            color: #b0b0b0;
         }
 
         .chat-container {
@@ -57,6 +61,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            background: #1a1a1a;
         }
 
         .message {
@@ -80,13 +85,14 @@
         }
 
         .user-message .text {
-            background: #667eea;
+            background: #5b7ce8;
             color: white;
             padding: 12px 16px;
             border-radius: 15px;
             max-width: 70%;
             word-wrap: break-word;
             border-bottom-right-radius: 5px;
+            box-shadow: 0 2px 8px rgba(91, 124, 232, 0.3);
         }
 
         .ai-message {
@@ -94,50 +100,61 @@
         }
 
         .ai-message .text {
-            background: #f0f0f0;
-            color: #333;
+            background: #2a2a2a;
+            color: #e0e0e0;
             padding: 12px 16px;
             border-radius: 15px;
             max-width: 85%;
             word-wrap: break-word;
             border-bottom-left-radius: 5px;
             line-height: 1.4;
+            border: 1px solid #333333;
         }
 
         .input-container {
             padding: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #2a2a2a;
             display: flex;
             gap: 10px;
+            background: #0f0f0f;
         }
 
         input {
             flex: 1;
             padding: 12px 15px;
-            border: 2px solid #eee;
+            border: 2px solid #2a2a2a;
             border-radius: 25px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            background: #2a2a2a;
+            color: #ffffff;
+            transition: all 0.3s;
+        }
+
+        input::placeholder {
+            color: #777777;
         }
 
         input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #5b7ce8;
+            background: #333333;
         }
 
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5b7ce8 0%, #4a6bcf 100%);
             color: white;
             border: none;
             padding: 12px 20px;
             border-radius: 25px;
             font-size: 16px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(91, 124, 232, 0.3);
         }
 
         button:hover {
             transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(91, 124, 232, 0.4);
         }
 
         button:active {
@@ -180,7 +197,7 @@
 
         .empty-state {
             text-align: center;
-            color: #999;
+            color: #777777;
             padding: 40px 20px;
             margin: auto;
         }
@@ -188,26 +205,27 @@
         .empty-state h2 {
             font-size: 20px;
             margin-bottom: 10px;
+            color: #ffffff;
         }
 
         .info-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
+            background: #2a2a2a;
+            border-left: 4px solid #5b7ce8;
             padding: 12px;
             margin: 10px 0;
             border-radius: 5px;
             font-size: 13px;
-            color: #856404;
+            color: #b0b0b0;
         }
 
         .error-box {
-            background: #f8d7da;
-            border-left: 4px solid #dc3545;
+            background: #3a2a2a;
+            border-left: 4px solid #ff6b6b;
             padding: 12px;
             margin: 10px 0;
             border-radius: 5px;
             font-size: 13px;
-            color: #721c24;
+            color: #ff9999;
         }
     </style>
 </head>
