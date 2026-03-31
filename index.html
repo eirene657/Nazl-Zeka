@@ -241,6 +241,10 @@
             </div>
         </div>
 
+        <div id="countdownWidget" style="background: #2a2a2a; border-bottom: 1px solid #333333; padding: 12px 15px; font-size: 12px; color: #b0b0b0; text-align: center; display: none;">
+            <div id="countdownText"></div>
+        </div>
+
         <div class="chat-container" id="chatContainer">
             <div class="empty-state">
                 <h2>👋 Merhaba!</h2>
@@ -353,12 +357,6 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             `;
         }
 
-        // Sayfa yüklendiğinde geçmişi geri yükle
-        window.addEventListener('DOMContentLoaded', function() {
-            loadChatHistory();
-            updateMoodButtons();
-        });
-
         function changeMood(mood) {
             currentMood = mood;
             localStorage.setItem('eiraiMood', mood);
@@ -379,6 +377,43 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
         if (savedMood) {
             currentMood = savedMood;
         }
+
+        // COUNTDOWN TIMER
+        function updateCountdown() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const events = [
+                { name: '💕 1 Şubat - Sevgili Oldukların Günü', month: 2, day: 1 },
+                { name: '🎂 25 Ocak - Nazlıcan\'ın Doğum Günü', month: 1, day: 25 },
+                { name: '🎂 14 Ağustos - Emirhan\'ın Doğum Günü', month: 8, day: 14 },
+                { name: '💫 18 Aralık - Tanışma Günü', month: 12, day: 18 }
+            ];
+            
+            let countdowns = [];
+            events.forEach(event => {
+                let nextDate = new Date(today.getFullYear(), event.month - 1, event.day);
+                if (nextDate < today) {
+                    nextDate = new Date(today.getFullYear() + 1, event.month - 1, event.day);
+                }
+                const daysLeft = Math.ceil((nextDate - today) / (1000 * 60 * 60 * 24));
+                countdowns.push(`${event.name} - ${daysLeft} gün kaldı`);
+            });
+            
+            const widget = document.getElementById('countdownWidget');
+            const text = document.getElementById('countdownText');
+            if (countdowns.length > 0) {
+                text.innerHTML = countdowns.join(' • ');
+                widget.style.display = 'block';
+            }
+        }
+
+        // Sayfa yüklendiğinde countdown'u göster
+        window.addEventListener('DOMContentLoaded', function() {
+            loadChatHistory();
+            updateMoodButtons();
+            updateCountdown();
+        });
 
         async function callGroqAI(userMessage) {
             try {
