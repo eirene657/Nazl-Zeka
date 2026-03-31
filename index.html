@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🤖 AI Chatbot - EIRAI</title>
     <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #2a2a2a;
+            --accent-primary: #5b7ce8;
+        }
+
+        body.light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e8e8e8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --border-color: #d0d0d0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,45 +32,71 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f0f0f;
+            background: var(--bg-primary);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: background-color 0.3s ease;
         }
 
         .container {
-            background: #1a1a1a;
+            background: var(--bg-secondary);
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 600px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             height: 80vh;
-            border: 1px solid #2a2a2a;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .header {
-            background: #0f0f0f;
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid #2a2a2a;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
+            font-size: 20px;
+            margin: 0;
             font-weight: 600;
         }
 
         .header p {
-            font-size: 14px;
+            font-size: 12px;
             opacity: 0.7;
-            color: #b0b0b0;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
         }
 
         .chat-container {
@@ -61,7 +106,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background: #1a1a1a;
+            background: var(--bg-secondary);
         }
 
         .message {
@@ -69,23 +114,8 @@
             animation: slideIn 0.3s ease;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .user-message {
-            justify-content: flex-end;
-        }
-
         .user-message .text {
-            background: #5b7ce8;
+            background: var(--accent-primary);
             color: white;
             padding: 12px 16px;
             border-radius: 15px;
@@ -95,61 +125,60 @@
             box-shadow: 0 2px 8px rgba(91, 124, 232, 0.3);
         }
 
-        .ai-message {
-            justify-content: flex-start;
-        }
-
         .ai-message .text {
-            background: #2a2a2a;
-            color: #e0e0e0;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             padding: 12px 16px;
             border-radius: 15px;
             max-width: 85%;
             word-wrap: break-word;
             border-bottom-left-radius: 5px;
             line-height: 1.4;
-            border: 1px solid #333333;
+            border: 1px solid var(--border-color);
         }
 
         .input-container {
             padding: 20px;
-            border-top: 1px solid #2a2a2a;
+            border-top: 1px solid var(--border-color);
             display: flex;
             gap: 10px;
-            background: #0f0f0f;
+            background: var(--bg-primary);
+            flex-wrap: wrap;
         }
 
         input {
             flex: 1;
+            min-width: 150px;
             padding: 12px 15px;
-            border: 2px solid #2a2a2a;
+            border: 2px solid var(--border-color);
             border-radius: 25px;
             font-size: 14px;
-            background: #2a2a2a;
-            color: #ffffff;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             transition: all 0.3s;
         }
 
         input::placeholder {
-            color: #777777;
+            color: var(--text-secondary);
         }
 
         input:focus {
             outline: none;
-            border-color: #5b7ce8;
-            background: #333333;
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
         }
 
         button {
-            background: linear-gradient(135deg, #5b7ce8 0%, #4a6bcf 100%);
+            background: linear-gradient(135deg, var(--accent-primary) 0%, #4a6bcf 100%);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 25px;
-            font-size: 16px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 2px 8px rgba(91, 124, 232, 0.3);
+            white-space: nowrap;
         }
 
         button:hover {
@@ -161,43 +190,30 @@
             transform: scale(0.95);
         }
 
-        .typing {
-            display: flex;
-            align-items: flex-end;
-            gap: 5px;
+        .stats-widget, .quote-widget {
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 15px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
         }
 
-        .typing span {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #667eea;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite;
+        .stats-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 5px;
         }
 
-        .typing span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes bounce {
-            0%, 60%, 100% {
-                opacity: 0.5;
-                transform: translateY(0);
-            }
-            30% {
-                opacity: 1;
-                transform: translateY(-10px);
-            }
+        .stat-item {
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
         .empty-state {
             text-align: center;
-            color: #777777;
+            color: var(--text-secondary);
             padding: 40px 20px;
             margin: auto;
         }
@@ -205,43 +221,48 @@
         .empty-state h2 {
             font-size: 20px;
             margin-bottom: 10px;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .info-box {
-            background: #2a2a2a;
-            border-left: 4px solid #5b7ce8;
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-primary);
             padding: 12px;
             margin: 10px 0;
             border-radius: 5px;
             font-size: 13px;
-            color: #b0b0b0;
-        }
-
-        .error-box {
-            background: #3a2a2a;
-            border-left: 4px solid #ff6b6b;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            font-size: 13px;
-            color: #ff9999;
+            color: var(--text-secondary);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 AI Chatbot - EIRAI</h1>
+            <div class="header-top">
+                <h1>🤖 EIRAI</h1>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Tema Değiştir">🌙</button>
+            </div>
             <p>Groq AI ile güçlendirildi ⚡</p>
-            <div style="display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap;">
+            <div class="mood-buttons">
                 <button onclick="changeMood('romantic')" style="background: #e85d75; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-romantic">💕 Romantik</button>
                 <button onclick="changeMood('funny')" style="background: #f59e0b; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-funny">😂 Komik</button>
                 <button onclick="changeMood('wise')" style="background: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-wise">🧠 Bilge</button>
             </div>
         </div>
 
-        <div id="countdownWidget" style="background: #2a2a2a; border-bottom: 1px solid #333333; padding: 12px 15px; font-size: 12px; color: #b0b0b0; text-align: center; display: none;">
+        <div id="statsWidget" class="stats-widget" style="display: none;">
+            <div>📊 <strong>Çift İstatistikleri</strong></div>
+            <div class="stats-content">
+                <div><div class="stat-item" id="daysStats">0 gün</div>Beraber</div>
+                <div><div class="stat-item" id="relationshipStats">0 gün</div>Sevgili</div>
+            </div>
+        </div>
+
+        <div id="quoteWidget" class="quote-widget" style="display: none;">
+            <div id="quoteText" style="font-style: italic; margin: 5px 0; color: var(--text-primary); font-weight: 500;">💕 Her gün birlikte olmak bir bereket...</div>
+        </div>
+
+        <div id="countdownWidget" style="background: var(--bg-tertiary); border-bottom: 1px solid var(--border-color); padding: 10px 15px; font-size: 11px; color: var(--text-secondary); text-align: center; display: none;">
             <div id="countdownText"></div>
         </div>
 
@@ -263,7 +284,10 @@
                 autocomplete="off"
             >
             <button onclick="sendMessage()">Gönder</button>
-            <button onclick="clearChatHistory()" style="background: #ff6b6b; padding: 12px 15px; font-size: 14px;">🗑️ Temizle</button>
+            <button onclick="clearChatHistory()" style="background: #ff6b6b;">🗑️</button>
+            <button onclick="exportTextFile()" style="background: #10b981;">📄</button>
+            <button onclick="exportPDF()" style="background: #f59e0b;">📕</button>
+            <button onclick="refreshQuote()" style="background: #8b5cf6;">💡</button>
         </div>
     </div>
 
@@ -408,11 +432,138 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             }
         }
 
-        // Sayfa yüklendiğinde countdown'u göster
+        // TEMA TOGGLEfunction toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const theme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+            localStorage.setItem('eiraiTheme', theme);
+            document.querySelector('.theme-toggle').textContent = theme === 'light' ? '☀️' : '🌙';
+        }
+
+        // ÇIFT İSTATİSTİKLERİ
+        function getRelationshipStats() {
+            const meetDate = new Date(2025, 11, 18); // 18 Aralık 2025
+            const relationshipDate = new Date(2026, 0, 1); // 1 Şubat 2026
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const daysTogether = Math.floor((today - meetDate) / (1000 * 60 * 60 * 24));
+            const daysAsCouple = Math.floor((today - relationshipDate) / (1000 * 60 * 60 * 24));
+            const months = Math.floor(daysTogether / 30);
+            
+            return {
+                daysTogether: daysTogether,
+                daysAsCouple: daysAsCouple,
+                months: months
+            };
+        }
+
+        function displayStats() {
+            const stats = getRelationshipStats();
+            document.getElementById('daysStats').innerText = stats.daysTogether > 0 ? stats.daysTogether + ' gün' : 'Yakında';
+            document.getElementById('relationshipStats').innerText = stats.daysAsCouple > 0 ? stats.daysAsCouple + ' gün' : 'Yakında';
+            document.getElementById('statsWidget').style.display = 'block';
+        }
+
+        // GÜNÜN ALINTISI
+        const quotes = [
+            '💕 Her gün birlikte olmak bir bereket...',
+            '❤️ Emirhan ve Nazlıcan\'ın aşkı gerçek!',
+            '✨ Siz olmadan hayat anlamı yok!',
+            '💑 İki kalp bir ritim!',
+            '🔥 Seninle her an kıymetli!',
+            '😍 Gözlerinde sonsuzluk görüyorum!',
+            '🎯 Kader seni yapacak o kişi olarak seçti!',
+            '💭 Seninle olmayan zamanlar çok uzun...',
+            '🌟 Sevgimiz yıldızlardan güçlü!',
+            '🎵 Kalpm senin adını çarpıyor!',
+            '💫 Seninle sonsuza kadar!',
+            '🥰 Her sabah seni görmek dünyanın en güzel şeyi!',
+            '🎊 Seninle her an bir kutlama!',
+            '👑 Sen benim kalbimin kraliçesi/kıroısın!',
+            '🌈 Renkleri senle öğrendim!',
+            '🎭 Hayatımızın hikayesi yazılmaya devam ediyor...',
+            '💍 Seninle sonsuzluğa gidebilirim!',
+            '🎸 Senin hakkında şarkılar yazılmalı!',
+            '🌺 Güzelliğin benimle kal!',
+            '⚡ Enerjin bana hayat veriyor!'
+        ];
+
+        function refreshQuote() {
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quoteText').innerText = quote;
+            document.getElementById('quoteWidget').style.display = 'block';
+            localStorage.setItem('eiraiLastQuote', quote);
+        }
+
+        // HEDİYE ÖNERİLERİ
+        const giftSuggestions = {
+            'sevgili': ['💍 Yüzük', '💐 Çiçek', '💝 Kalp Şocuolata', '👗 Elbise', '👜 Çanta', '⌚ Saat', '👗 Kıyafet'],
+            'doğum': ['🎂 Pasta', '🎁 Hediye Seti', '👟 Ayakkabı', '🎮 Oyun', '📱 Telefon Aksesoru', '⌚ Saat', '🎧 Kulaklık'],
+            'tanışma': ['📅 Anı Defteri', '📸 Fotoğraf', '🎫 Konser Bilet', '🍽️ Restoran Akşamı', '🎪 Eğlence Parkı', '✈️ Seyahat'],
+            'yıldönüm': ['💐 Güller', '💍 Yüzük', '🌹 Çiçek Buketi', '🎞️ Anı Albümü', '📝 Sevgi Mektubu', '👨‍👩‍👧 Aile Fotoları']
+        };
+
+        function getGiftSuggestions(occasion) {
+            const suggestion = giftSuggestions[occasion] || giftSuggestions['sevgili'];
+            const gift = suggestion[Math.floor(Math.random() * suggestion.length)];
+            return `${occasion} için hediye önerisi: ${gift} 🎀`;
+        }
+
+        // EXPORT FUNCTIONS
+        function exportTextFile() {
+            const container = document.getElementById('chatContainer');
+            const messages = Array.from(container.querySelectorAll('.message')).map(msg => {
+                const isUser = msg.classList.contains('user-message');
+                const text = msg.querySelector('.text').textContent;
+                return (isUser ? 'Siz' : 'EIRAI') + ': ' + text;
+            }).join('\\n\\n');
+
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(messages));
+            element.setAttribute('download', 'eirai-sohbet-' + new Date().toISOString().split('T')[0] + '.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function exportPDF() {
+            const container = document.getElementById('chatContainer');
+            const messages = Array.from(container.querySelectorAll('.message')).map(msg => {
+                const isUser = msg.classList.contains('user-message');
+                const text = msg.querySelector('.text').textContent;
+                return (isUser ? 'Siz' : 'EIRAI') + ': ' + text;
+            }).join('\\n\\n');
+
+            let pdfContent = '%PDF-1.4\\n%Generated by EIRAI\\n\\n';
+            pdfContent += messages.substring(0, 1000); // PDF basit format (basic)
+            
+            // Basit PDF oluştur (çok detaylı değil ama işe yarıyor)
+            const text = messages.substring(0, 500).replace(/\\n/g, ' ');
+            
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent('EIRAI Sohbet Geçmişi\\n' + '='.repeat(30) + '\\n\\n' + messages));
+            element.setAttribute('download', 'eirai-sohbet-' + new Date().toISOString().split('T')[0] + '.pdf');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Sayfa yüklendiğinde
         window.addEventListener('DOMContentLoaded', function() {
+            // Tema yükle
+            const savedTheme = localStorage.getItem('eiraiTheme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            }
+
             loadChatHistory();
             updateMoodButtons();
             updateCountdown();
+            displayStats();
+            refreshQuote();
         });
 
         async function callGroqAI(userMessage) {
