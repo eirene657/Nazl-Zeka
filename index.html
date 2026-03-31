@@ -244,6 +244,7 @@
             </div>
             <p>Groq AI ile güçlendirildi ⚡</p>
             <div class="mood-buttons">
+                <button onclick="changeMood('normal')" style="background: #6b7280; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-normal">🙂 Normal</button>
                 <button onclick="changeMood('romantic')" style="background: #e85d75; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-romantic">💕 Romantik</button>
                 <button onclick="changeMood('funny')" style="background: #f59e0b; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-funny">😂 Komik</button>
                 <button onclick="changeMood('wise')" style="background: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-wise">🧠 Bilge</button>
@@ -256,6 +257,7 @@
                 <div><div class="stat-item" id="daysStats">0 gün</div>Beraber</div>
                 <div><div class="stat-item" id="relationshipStats">0 gün</div>Sevgili</div>
             </div>
+            <div id="statsHint" style="font-size: 10px; margin-top: 6px; color: var(--text-secondary);">Başlangıç: 1 Şubat 2026</div>
         </div>
 
         <div id="quoteWidget" class="quote-widget" style="display: none;">
@@ -337,7 +339,7 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
         ];
 
         // LOCALSTORAGE - Konuşma Geçmişi
-        let currentMood = 'romantic'; // default mood
+        let currentMood = 'normal'; // default mood
         
         function saveChatHistory() {
             const messages = [];
@@ -467,6 +469,7 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
 
             document.getElementById('daysStats').innerText = togetherText;
             document.getElementById('relationshipStats').innerText = coupleText;
+            document.getElementById('statsHint').innerText = `Sevgili olma başlangıcı: 1 Şubat 2026. Bugün: ${new Date().toLocaleDateString('tr-TR')}`;
             document.getElementById('statsWidget').style.display = 'block';
         }
 
@@ -755,6 +758,10 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
                     moodContext = '(Bu soruya romantik ve sevgi dolu şekilde cevap ver)';
                 } else if (currentMood === 'funny') {
                     moodContext = '(Bu soruya komik ve eğlenceli şekilde cevap ver, şakasını katmayı unutma!)';
+                } else if (currentMood === 'wise') {
+                    moodContext = '(Bu soruya bilge ve düşündürücü şekilde cevap ver)';
+                } else if (currentMood === 'normal') {
+                    moodContext = '(Bu soruya doğal ve dengeli şekilde cevap ver)';
                 } else if (currentMood === 'wise') {
                     moodContext = '(Bu soruya bilge ve düşündürücü şekilde cevap ver)';
                 }
