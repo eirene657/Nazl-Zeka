@@ -254,6 +254,7 @@
                 autocomplete="off"
             >
             <button onclick="sendMessage()">Gönder</button>
+            <button onclick="clearChatHistory()" style="background: #ff6b6b; padding: 12px 15px; font-size: 14px;">🗑️ Temizle</button>
         </div>
     </div>
 
@@ -301,6 +302,56 @@ YARATICILIK:
 HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             }
         ];
+
+        // LOCALSTORAGE - Konuşma Geçmişi
+        let currentMood = 'romantic'; // default mood
+        
+        function saveChatHistory() {
+            const messages = [];
+            const container = document.getElementById('chatContainer');
+            container.querySelectorAll('.message').forEach(msg => {
+                const isUser = msg.classList.contains('user-message');
+                const text = msg.querySelector('.text').textContent;
+                messages.push({
+                    user: isUser,
+                    text: text,
+                    timestamp: new Date().toLocaleString('tr-TR')
+                });
+            });
+            localStorage.setItem('eiraiChatHistory', JSON.stringify(messages));
+        }
+        
+        function loadChatHistory() {
+            const saved = localStorage.getItem('eiraiChatHistory');
+            if (saved) {
+                try {
+                    const messages = JSON.parse(saved);
+                    messages.forEach(msg => {
+                        addMessage(msg.text, msg.user);
+                    });
+                } catch(e) {
+                    console.log('Geçmiş yüklenemedi');
+                }
+            }
+        }
+        
+        function clearChatHistory() {
+            localStorage.removeItem('eiraiChatHistory');
+            document.getElementById('chatContainer').innerHTML = `
+                <div class="empty-state">
+                    <h2>👋 Merhaba!</h2>
+                    <p>Beni sorgula! Ben gerçek bir yapay zeka modeli ile konuşuyorum! 🧠</p>
+                    <div class="info-box">
+                        🔥 <strong>Groq LLaMA 3 8B:</strong> Çok hızlı, çok zekı!
+                    </div>
+                </div>
+            `;
+        }
+
+        // Sayfa yüklendiğinde geçmişi geri yükle
+        window.addEventListener('DOMContentLoaded', function() {
+            loadChatHistory();
+        });
 
         async function callGroqAI(userMessage) {
             try {
@@ -581,6 +632,7 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
 
             // Kullanıcı mesajını ekle
             addMessage(userInput, true);
+            saveChatHistory(); // Geçmişe kaydet
             input.value = '';
 
             // Typing animasyonu göster
@@ -590,6 +642,7 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             const aiResponse = await callGroqAI(userInput);
             removeTyping();
             addMessage(aiResponse, false);
+            saveChatHistory(); // Geçmişe kaydet
         }
 
         // Enter tuşu ile gönder
