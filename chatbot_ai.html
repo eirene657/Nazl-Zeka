@@ -564,6 +564,16 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             updateCountdown();
             displayStats();
             refreshQuote();
+
+            // Enter tuşu ile gönder
+            document.getElementById('userInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Sayfa yüklenince input'a focus ver
+            document.getElementById('userInput').focus();
         });
 
         async function callGroqAI(userMessage) {
@@ -866,16 +876,6 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             addMessage(aiResponse, false);
             saveChatHistory(); // Geçmişe kaydet
         }
-
-        // Enter tuşu ile gönder
-        document.getElementById('userInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Sayfa yüklenince input'a focus ver
-        document.getElementById('userInput').focus();
     </script>
 </body>
 </html>
