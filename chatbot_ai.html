@@ -234,6 +234,11 @@
         <div class="header">
             <h1>🤖 AI Chatbot - EIRAI</h1>
             <p>Groq AI ile güçlendirildi ⚡</p>
+            <div style="display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap;">
+                <button onclick="changeMood('romantic')" style="background: #e85d75; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-romantic">💕 Romantik</button>
+                <button onclick="changeMood('funny')" style="background: #f59e0b; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-funny">😂 Komik</button>
+                <button onclick="changeMood('wise')" style="background: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;" id="mood-wise">🧠 Bilge</button>
+            </div>
         </div>
 
         <div class="chat-container" id="chatContainer">
@@ -351,7 +356,29 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
         // Sayfa yüklendiğinde geçmişi geri yükle
         window.addEventListener('DOMContentLoaded', function() {
             loadChatHistory();
+            updateMoodButtons();
         });
+
+        function changeMood(mood) {
+            currentMood = mood;
+            localStorage.setItem('eiraiMood', mood);
+            updateMoodButtons();
+        }
+
+        function updateMoodButtons() {
+            document.querySelectorAll('[id^="mood-"]').forEach(btn => {
+                btn.style.opacity = '0.6';
+                btn.style.transform = 'scale(1)';
+            });
+            document.getElementById('mood-' + currentMood).style.opacity = '1';
+            document.getElementById('mood-' + currentMood).style.transform = 'scale(1.1)';
+        }
+
+        // Açılışta kaydedilen mood'u yükle
+        const savedMood = localStorage.getItem('eiraiMood');
+        if (savedMood) {
+            currentMood = savedMood;
+        }
 
         async function callGroqAI(userMessage) {
             try {
@@ -515,10 +542,19 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
                     return gameResponses[Math.floor(Math.random() * gameResponses.length)];
                 }
 
-                // User mesajını history'ye ekle
+                // User mesajını history'ye ekle (mood context ile)
+                let moodContext = '';
+                if (currentMood === 'romantic') {
+                    moodContext = '(Bu soruya romantik ve sevgi dolu şekilde cevap ver)';
+                } else if (currentMood === 'funny') {
+                    moodContext = '(Bu soruya komik ve eğlenceli şekilde cevap ver, şakasını katmayı unutma!)';
+                } else if (currentMood === 'wise') {
+                    moodContext = '(Bu soruya bilge ve düşündürücü şekilde cevap ver)';
+                }
+                
                 conversationHistory.push({
                     role: 'user',
-                    content: userMessage
+                    content: userMessage + ' ' + moodContext
                 });
 
                 // History'yi sınırla (son 10 mesajı tut)
