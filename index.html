@@ -652,18 +652,23 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
                     const lastMeetDate = new Date(2025, 11, 18); // 18 Aralık 2025
                     const friendsDate = new Date(2026, 1, 1); // 1 Şubat 2026
                     const today = new Date();
-                    
-                    const daysSinceType = (date) => Math.floor((today - date) / (1000 * 60 * 60 * 24));
-                    const meetDays = daysSinceType(lastMeetDate);
-                    const friendsDays = daysSinceType(friendsDate);
+                    today.setHours(0, 0, 0, 0);
+
+                    const daysSince = (date) => Math.floor((today - date) / (1000 * 60 * 60 * 24));
+                    const meetDays = daysSince(lastMeetDate);
+                    const friendsDays = daysSince(friendsDate);
                     const meetMonths = Math.floor(meetDays / 30);
                     const friendsMonths = Math.floor(friendsDays / 30);
-                    
+
+                    const loveText = friendsDays < 0
+                        ? `Sevgili olma günü henüz gelmedi (1 Şubat 2026). ${Math.abs(friendsDays)} gün kaldı.`
+                        : `Sevgili olma gününden bu yana ${friendsDays} gün geçti (${friendsMonths} ay).`;
+
                     const anniversaryResponses = [
-                        `💕 Emirhan ve Nazlıcan ${friendsDays} gün (${friendsMonths} ay) kesintisiz sevgi yaşıyorlar! Ne güzel! ✨`,
-                        `🎉 Birlikteler ${meetDays} gün! ${meetMonths} aydan fazla! Her gün daha da güzelleşiyor aralarındaki aşk! 💑`,
-                        `❤️ Resmi olarak aşkları ${friendsDays} gün! Binlerce saati beraber geçirdiler... Ne mutsuzlar! 😍✨`,
-                        `🌟 Tanıştıklarından bu yana ${meetDays} gün, sevgili olduktan ${friendsDays} gün geçti. Bütün o zamanda kalpler eş zamanlı çarptı! 💕`
+                        `💕 ${loveText}`,
+                        `🎉 Tanıştıklarından bu yana ${meetDays} gün oldu (${meetMonths} ay).`,
+                        `❤️ 1 Şubat 2026'da sevgili oldunuz, bu tarihten ${friendsDays} gün geçti.`,
+                        `🌟 Sevgili oldukları günden bugüne ${friendsDays} gün geçti. Kutlu olsun!`
                     ];
                     return anniversaryResponses[Math.floor(Math.random() * anniversaryResponses.length)];
                 }

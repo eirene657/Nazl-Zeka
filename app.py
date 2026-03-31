@@ -126,21 +126,26 @@ def chat():
 
         # YIL DÖNÜMÜ HESAPLAYICI
         if 'kaç gün' in msg or 'kaç ay' in msg or 'ne kadar' in msg or 'yıldönüm' in msg:
-            from datetime import datetime
-            lastMeetDate = datetime(2025, 12, 18)  # 18 Aralık 2025
-            friendsDate = datetime(2026, 2, 1)  # 1 Şubat 2026
-            today = datetime.now()
-            
-            meetDays = (today - lastMeetDate).days
-            friendsDays = (today - friendsDate).days
-            meetMonths = meetDays // 30
-            friendsMonths = friendsDays // 30
-            
+            from datetime import date
+            meet_date = date(2025, 12, 18)  # 18 Aralık 2025
+            love_date = date(2026, 2, 1)   # 1 Şubat 2026
+            today = date.today()
+
+            meet_days = (today - meet_date).days
+            love_days = (today - love_date).days
+            meet_months = meet_days // 30
+            love_months = love_days // 30
+
+            if love_days < 0:
+                love_text = f"Sevgili olma günü henüz gelmedi (1 Şubat 2026). {abs(love_days)} gün kaldı."
+            else:
+                love_text = f"Sevgili olma gününden bu yana {love_days} gün geçti ({love_months} ay)."
+
             responses = [
-                f"💕 Emirhan ve Nazlıcan {friendsDays} gün ({friendsMonths} ay) kesintisiz sevgi yaşıyorlar! Ne güzel! ✨",
-                f"🎉 Birlikteler {meetDays} gün! {meetMonths} aydan fazla! Her gün daha da güzelleşiyor aralarındaki aşk! 💑",
-                f"❤️ Resmi olarak aşkları {friendsDays} gün! Binlerce saati beraber geçirdiler... Ne mutsuzlar! 😍✨",
-                f"🌟 Tanıştıklarından bu yana {meetDays} gün, sevgili olduktan {friendsDays} gün geçti. Bütün o zamanda kalpler eş zamanlı çarptı! 💕"
+                f"💕 {love_text}",
+                f"🎉 Tanıştıklarından bu yana {meet_days} gün oldu ({meet_months} ay).",
+                f"❤️ 1 Şubat 2026'da sevgili oldunuz, bu tarihten {love_days} gün geçti.",
+                f"🌟 Sevgili oldukları günden bugüne {love_days} gün geçti. Kutlu olsun!"
             ]
             import random
             return jsonify({'response': random.choice(responses), 'success': True})
