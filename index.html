@@ -251,6 +251,8 @@
             </div>
         </div>
 
+        <!-- Çift İstatistikleri gösterimi kaldırıldı isteğe göre tekrar aktif edilebilir -->
+        <!--
         <div id="statsWidget" class="stats-widget" style="display: none;">
             <div>📊 <strong>Çift İstatistikleri</strong></div>
             <div class="stats-content">
@@ -259,6 +261,7 @@
             </div>
             <div id="statsHint" style="font-size: 10px; margin-top: 6px; color: var(--text-secondary);">Başlangıç: 1 Şubat 2026</div>
         </div>
+        -->
 
         <div id="quoteWidget" class="quote-widget" style="display: none;">
             <div id="quoteText" style="font-style: italic; margin: 5px 0; color: var(--text-primary); font-weight: 500;">💕 Her gün birlikte olmak bir bereket...</div>
@@ -491,14 +494,15 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
         }
 
         function displayStats() {
-            const stats = getRelationshipStats();
-            const togetherText = stats.daysTogether >= 0 ? `${stats.daysTogether} gün (${stats.togetherMonths} ay ${stats.togetherDays} gün)` : 'Yakında';
-            const coupleText = stats.daysAsCouple >= 0 ? `${stats.daysAsCouple} gün (${stats.coupleMonths} ay ${stats.coupleDays} gün)` : 'Yakında';
+            // İstatistik widget kaldırıldı, bu fonksiyon boş bırakıldı
+            return;
+        }
 
-            document.getElementById('daysStats').innerText = togetherText;
-            document.getElementById('relationshipStats').innerText = coupleText;
-            document.getElementById('statsHint').innerText = `Sevgili olma başlangıcı: 1 Şubat 2026. Bugün: ${new Date().toLocaleDateString('tr-TR')}`;
-            document.getElementById('statsWidget').style.display = 'block';
+        // mgt.clearMarks hatasını engellemek için güvenli fallback
+        if (window.mgt && typeof window.mgt.clearMarks !== 'function') {
+            window.mgt.clearMarks = function() {
+                console.warn('mgt.clearMarks çağrıldı, ancak bu fonksiyon mevcut değil.');
+            };
         }
 
         // GÜNÜN ALINTISI
@@ -599,7 +603,7 @@ HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!`
             loadChatHistory();
             updateMoodButtons();
             updateCountdown();
-            displayStats();
+            // displayStats(); // İstatistik widget'ı kaldırıldı
             refreshQuote();
 
             // Enter tuşu ile gönder
