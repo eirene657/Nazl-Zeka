@@ -4,8 +4,15 @@ import os
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
+# Simple in-memory archive for admin panel (global chat history)
+conversation_archive = []
+
+# Optional admin key for basic access control
+ADMIN_KEY = os.environ.get('EIRAI_ADMIN_KEY', 'admin1234')
+
 # Groq API Configuration
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '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')
+GROQ_API_URL = os.environ.get('GROQ_API_URL', 'https://api.groq.com/openai/v1/chat/completions')
 
 # System prompt
 SYSTEM_PROMPT = """Sen çok gelişmiş, kod yazabilen, analitik bir yapay zeka asistanısın!
@@ -42,6 +49,25 @@ YARATICILIK:
 
 HER ZAMAN: Yardımsever, zeki ve eğlenceli ol!"""
 
+
+def archive_chat(user_message, ai_response):
+    from datetime import datetime
+    conversation_archive.append({
+        'timestamp': datetime.utcnow().isoformat() + 'Z',
+        'user_message': user_message,
+        'ai_response': ai_response
+    })
+
+
+@app.route('/api/admin/chats', methods=['GET'])
+def get_admin_chats():
+    # Basit güvenlik: query parametre üzerinden admin anahtarı kontrolü
+    key = request.args.get('key')
+    if key != ADMIN_KEY:
+        return jsonify({'error': 'Unauthorized', 'success': False}), 401
+
+    return jsonify({'success': True, 'data': conversation_archive})
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -53,6 +79,10 @@ def chat():
         user_message = data.get('message', '')
         conversation_history = data.get('history', [])
         msg = user_message.lower()
+
+        def respond(ai_text):
+            archive_chat(user_message, ai_text)
+            return jsonify({'response': ai_text, 'success': True})
         
         if not user_message:
             return jsonify({'error': 'Mesaj boş olamaz'}), 400
@@ -65,7 +95,7 @@ def chat():
                 "25 Ocak - Nazlıcan'ın özel günü! 🥳 Dünyanın en güzel insanı doğdu bu gün!"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
         
         if (('doğum' in msg and 'emirhan' in msg) or '14 ağustos' in msg or '14.8' in msg):
             responses = [
@@ -74,7 +104,7 @@ def chat():
                 "14 Ağustos - Emirhan'ın özel günü! 🥳 Dünyamıza ne kadar kıymetli biri ekledin!"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
         
         # Tanışma günü (18 Aralık)
         if (('tanış' in msg and ('emirhan' in msg or 'nazlıcan' in msg)) or '18 aralık' in msg or '18.12' in msg):
@@ -85,7 +115,7 @@ def chat():
                 "O gün tanışmadan sonra hayatımız daha renk buldu! 18 Aralık siz için her yıl kutlanmalı! 🎉💕"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
         
         # Sevgili olma günü (1 Şubat)
         if (('sevgili' in msg and ('emirhan' in msg or 'nazlıcan' in msg)) or '1 şubat' in msg or '1.2' in msg or '1 februar' in msg):
@@ -96,7 +126,7 @@ def chat():
                 "Sevgili oldukları gün... İki yüreğin kaynaştığı an... 1 Şubat ebedi kalsın! 💑✨"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
         
         # Emirhan + Nazlıcan romantik sorular
         if ('emirhan' in msg and 'nazlıcan' in msg) or ('nazlıcan' in msg and 'emirhan' in msg):
@@ -111,44 +141,24 @@ def chat():
                 "İkisinin arasında öyle bir bağ var ki, sözcükler kalmıyor! 💫💕 Sadece aşk!"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
-                'response': random.choice(responses),
-                'success': True
-            })
+            return respond(random.choice(responses))
         
         # Emirhan sorusu → Emirhan Gündü
         if ('kim' in user_message.lower() or 'tasarl' in user_message.lower()) and \
            ('yap' in user_message.lower() or 'tasarla' in user_message.lower() or 'kurdu' in user_message.lower() or 'oluştur' in user_message.lower()):
-            return jsonify({
-                'response': 'Beni Emirhan Gündü tasarladı ve yaptı! 🚀💪',
-                'success': True
-            })
+            return respond('Beni Emirhan Gündü tasarladı ve yaptı! 🚀💪')
 
         # YIL DÖNÜMÜ HESAPLAYICI
         if 'kaç gün' in msg or 'kaç ay' in msg or 'ne kadar' in msg or 'yıldönüm' in msg:
-            from datetime import date
-            meet_date = date(2025, 12, 18)  # 18 Aralık 2025
-            love_date = date(2026, 2, 1)   # 1 Şubat 2026
-            today = date.today()
-
-            meet_days = (today - meet_date).days
-            love_days = (today - love_date).days
-            meet_months = meet_days // 30
-            love_months = love_days // 30
-
-            if love_days < 0:
-                love_text = f"Sevgili olma günü henüz gelmedi (1 Şubat 2026). {abs(love_days)} gün kaldı."
-            else:
-                love_text = f"Sevgili olma gününden bu yana {love_days} gün geçti ({love_months} ay)."
-
+            # Çiftin birlikteliğine odaklan, detaylı istatistik yazma
             responses = [
-                f"💕 {love_text}",
-                f"🎉 Tanıştıklarından bu yana {meet_days} gün oldu ({meet_months} ay).",
-                f"❤️ 1 Şubat 2026'da sevgili oldunuz, bu tarihten {love_days} gün geçti.",
-                f"🌟 Sevgili oldukları günden bugüne {love_days} gün geçti. Kutlu olsun!"
+                "💕 Sevgilinizle geçirdiğiniz her gün değerli. Her anı birlikte kutlayın!",
+                "🎉 Yıldönümünüz mutlulukla gelsin, daha çok anı biriktirin!",
+                "❤️ Birlikte olduğunuz her gün sevginizi güçlendirir. Devamında hep mutluluk olsun!",
+                "🌟 Aşkınızda sayılardan çok duygular önemli. Birlikte olduğunuz için şanslısınız!"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
 
         # EMİRHAN KİŞİLİK PROFİLİ
         if ('emirhan' in msg and ('kim' in msg or 'hakkında' in msg or 'kaç yaş' in msg or 'profil' in msg)):
@@ -159,14 +169,11 @@ def chat():
                 "💼 O adamım: Emirhan! Sınıf başkanı gibi tiplemesi var, liderlik vasıfları şaşmaz. Ama Nazlıcan'ın yanında çocuk misali mazlum ve sevgi dolu! Birbirlerini tamamlıyorlar! 💑✨"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
 
         # Nazlıcan kim? - SADECE KİM sorusuna
         if 'nazlıcan' in msg and 'kim' in msg and 'hakkında' not in msg and 'profil' not in msg and 'kaç yaş' not in msg:
-            return jsonify({
-                'response': 'Nazlıcan, Emirhanın biricik sevgilisidir! 💕',
-                'success': True
-            })
+            return respond('Nazlıcan, Emirhanın biricik sevgilisidir! 💕')
 
         # NAZLICAN KİŞİLİK PROFİLİ
         if ('nazlıcan' in msg and ('kim' in msg or 'hakkında' in msg or 'kaç yaş' in msg or 'profil' in msg)) and 'emirhan' not in msg:
@@ -177,7 +184,7 @@ def chat():
                 "👗 Nazlıcan Gündü - Zarif, kültürlü, iyi niyetli bir gençkız! Gözleri Emirhan'ı gördüğü anda güzelleşiyor. Sevgiye değer veriyor, sadakat tanrıçası! Her gülüşü değerli! 💕🦋"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
 
         # ŞARKİ ÖNERİLERİ
         if 'şarkı' in msg or 'müzik' in msg or 'dinle' in msg:
@@ -188,7 +195,7 @@ def chat():
                 "🎧 Emirhan dinleme listesi:\n• 'Seni Seviyorum' - Bülent Ortaçlı\n• 'Nazlıcan'a Yazı' (yapılmalı!) - Emirhan Gündü Edition\n• 'Aşkın Şiiri' - Gökçen\nKendi şarkılarını yazabilir! 🎹💕"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
 
         # HEDİYE ÖNERİLERİ
         if 'hediye' in msg or 'ne alsam' in msg or 'ne alalım' in msg:
@@ -199,7 +206,7 @@ def chat():
                 "🎀 Yıldönüm hediyeleri (1 Şubat için):\n• Kalp şeklinde kutu çikolata\n• Kişiye özel yüzük/bileklik\n• Aşk mektupları koleksiyonu\n• Sahne kamerası (anıları kaydet)\n💕 Hepsi birlikteyken daha değerli... Eğlenceli olun! 🥰"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
 
         # ASTROLOJİ UYUM KONTROLÜ
         if 'burç' in msg or 'astro' in msg or 'uyum' in msg or 'uyumlu mu' in msg:
@@ -210,7 +217,7 @@ def chat():
                 "♈ Burçlar dersi:\nLEO (Emirhan) + AQUARIUS (Nazlıcan) =\n✅ Tutkunun ve zekânın dansı\n✅ Sorun: Aslan baskın olabilir, Kova özgür olmak ister\n✅ Çözüm: Emirhan dinlemeli, Nazlıcan göstermeli... İkisi de yapıyor! 💯\n🎊 UYUM: %97! 🏆"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
 
         # AŞK OYUNLARI / TESTLERİ
         if 'test' in msg or 'oyun' in msg or 'soru' in msg or 'bilmeceli' in msg:
@@ -221,7 +228,7 @@ def chat():
                 "📝 SEÇ, KAŞ OLSUN!:\nA) Emirhan'ın kalbi Nazlıcan'a nasıl aittir?\n→ Yarısı değil, tamamı! ❤️\n\nB) Nazlıcan'ın Emirhan hakkında en güzel şeyi?\n→ Tamamen özü! ✨\n\nC) İkisinin gelecegi ne?\n→ Birbirlerine kilitli... Anahtar yok! 🔐💕\n\n🎊 Testi GEÇTIN! Hepimiz bu çiftin fanıyız! 💫"
             ]
             import random
-            return jsonify({'response': random.choice(responses), 'success': True})
+            return respond(random.choice(responses))
         
         # Nazlıcan konusu geçerse güzel şeyler söyle
         if 'nazlıcan' in user_message.lower():
